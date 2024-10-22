@@ -8,11 +8,7 @@ BetterErrors.application_root = __dir__
 BetterErrors::Middleware.allow_ip!('0.0.0.0/0.0.0.0')
 
 get("/") do
-  "<h1>My page</h1>
-  <ul><li><a href='/dice/2/6'> Roll two six sided dice</a></li>
-  <li><a href='/dice/2/10'>Roll two ten sided dice</a></li>
-  <li><a href='/dice/1/20>Roll one twenty sided dice</a></li>
-  <li><a href='/dice/5/4'>Roll five four sided dice</a></li>"
+  erb(:elephant)
 end
 
 get("/howdy") do
@@ -29,38 +25,48 @@ get("/giraffe") do
 end
 
 get("/dice/2/6") do
-  first_roll=rand(1..6)
-  second_roll=rand(1..6)
-  sum=first_roll+second_roll
-  outcome="You rolled a #{first_roll} and a #{second_roll} for a total of #{sum}" 
+  @rolls=[]
+  2.times do
+    a_roll=rand(1..6)
+    @rolls.push(a_roll)
+  end
+  sum=@rolls.sum()
 
-  "<h1>2d6</h1>
-  <p>#{outcome}</p>"
+  erb(:two_six)
 end
 
 get("/dice/2/10") do
   first_roll=rand(1..10)
   second_roll=rand(1..10)
   sum=first_roll+second_roll
-  outcome="You rolled a #{first_roll} and a #{second_roll} for a total of #{sum}"
+  @outcome="You rolled a #{first_roll} and a #{second_roll} for a total of #{sum}"
 
-  "<h1>/dice/2/10</h1>
-  <p>#{outcome}</p>}"
+  erb(:two_ten)
 end
 
 get("/dice/1/20") do
-  first_roll=rand(1..20)
-  outcome="you rolled a #{first_roll}"
-  "<h1>dice/1/20</h1>
-  <p>#{outcome}</p>"
+  @die=rand(1..20)
+  @outcome="you rolled a #{@die}"
+  erb(:one_twenty)
 end
 
 get("/dice/5/4") do
-  first_roll=rand(1..4)
-  second_roll=rand(1..4)
-  third_roll=rand(1..4)
-  fourth=rand(1..4)
-  outcome="you rolled a #{first_roll}"
-  "<h1>dice/1/20</h1>
-  <p>#{outcome}</p>"
+  first_die = rand(1..4)
+	second_die = rand(1..4)
+  third_die = rand(1..4)
+  fourth_die = rand(1..4)
+  sum = first_die + second_die + third_die + fourth_die
+	
+	@outcome = "You rolled a #{first_die}, a #{second_die}, a #{third_die}, and a #{fourth_die} for a total of #{sum}."
+	
+	erb(:five_four)
+end
+
+get("/dice/100/6") do
+  @rolls=[]
+  100.times do
+    die=rand(1..6)
+    @rolls.push(die)
+  end
+  erb(:one_hundred_six)
 end
